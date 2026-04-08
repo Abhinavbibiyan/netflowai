@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetFlowAI — Live Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.2/dist/socket.io.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+  header { background: #1a1d27; border-bottom: 1px solid #2d3148; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  header h1 { font-size: 18px; font-weight: 600; color: #a78bfa; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; margin-left: auto; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .live-label { font-size: 12px; color: #34d399; }
+  .main { padding: 20px; max-width: 1400px; margin: 0 auto; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .card { background: #1a1d27; border: 1px solid #2d3148; border-radius: 10px; padding: 16px; }
+  .card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .card .value { font-size: 26px; font-weight: 600; }
+  .purple { color: #a78bfa; } .red { color: #f87171; } .green { color: #34d399; } .amber { color: #fbbf24; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .panel { background: #1a1d27; border: 1px solid #2d3148; border-radius: 10px; padding: 18px; }
+  .panel h2 { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .chart-wrap { position: relative; height: 200px; }
+  .full-panel { background: #1a1d27; border: 1px solid #2d3148; border-radius: 10px; padding: 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { text-align: left; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; padding: 6px 8px; border-bottom: 1px solid #2d3148; }
+  tbody tr { border-bottom: 1px solid #1e2235; transition: background 0.1s; }
+  tbody tr:hover { background: #20243a; }
+  tbody tr.new-row { animation: flash 1s ease-out; }
+  @keyframes flash { 0%{background:#2d3b2a} 100%{background:transparent} }
+  tbody td { padding: 7px 8px; color: #cbd5e1; vertical-align: top; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; }
+  .badge-red { background:#3b1f1f; color:#f87171; }
+  .badge-green { background:#1a2e24; color:#34d399; }
+  .badge-blue { background:#1a2540; color:#60a5fa; }
+  .badge-gray { background:#252836; color:#94a3b8; }
+  .shap-wrap { display: flex; flex-direction: column; gap: 3px; }
+  .shap-row { display: flex; align-items: center; gap: 5px; }
+  .shap-lbl { width: 90px; font-size: 10px; color: #64748b; flex-shrink: 0; }
+  .shap-track { flex: 1; height: 5px; background: #252836; border-radius: 3px; overflow: hidden; }
+  .shap-fill { height: 100%; border-radius: 3px; }
+  .shap-val { width: 40px; text-align: right; font-size: 10px; color: #64748b; }
+  .empty { color: #64748b; font-size: 13px; padding: 20px 0; text-align: center; }
+  @media (max-width: 680px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>NetFlowAI</h1>
+  <span style="font-size:12px;color:#64748b">Live anomaly detection</span>
+  <div class="live-dot" style="margin-left:auto"></div>
+  <span class="live-label">LIVE</span>
+</header>
+
+<div class="main">
+  <div class="cards">
+    <div class="card"><div class="label">Total flows scored</div><div class="value purple" id="c-total">0</div></div>
+    <div class="card"><div class="label">Anomalies detected</div><div class="value red" id="c-detected">0</div></div>
+    <div class="card"><div class="label">Flows this session</div><div class="value amber" id="c-session">0</div></div>
+    <div class="card"><div class="label">Model threshold</div><div class="value green" id="c-threshold">—</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Anomaly score — last 60 flows</h2>
+      <div class="chart-wrap"><canvas id="score-chart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Protocol breakdown</h2>
+      <div class="chart-wrap"><canvas id="proto-chart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="full-panel">
+    <h2 style="margin-bottom:14px">Live alerts — most recent first</h2>
+    <div id="alert-table-wrap">
+      <div class="empty" id="empty-msg">Waiting for anomalies...</div>
+      <div style="overflow-x:auto;display:none" id="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Time</th><th>Src IP</th><th>Dst IP</th><th>Proto</th>
+            <th>Pkts</th><th>Bytes</th><th>Score</th><th>SHAP importance</th>
+          </tr></thead>
+          <tbody id="alert-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const socket = io();
+
+let sessionFlows = 0;
+let totalFlows   = 0;
+let totalAlerts  = 0;
+let protoCount   = { TCP: 0, UDP: 0, ICMP: 0 };
+
+const scoreLabels = [];
+const scoreData   = [];
+const MAX_POINTS  = 60;
+
+const scoreChart = new Chart(document.getElementById('score-chart'), {
+  type: 'line',
+  data: {
+    labels: scoreLabels,
+    datasets: [{
+      label: 'Anomaly score',
+      data: scoreData,
+      borderColor: '#a78bfa',
+      backgroundColor: 'rgba(167,139,250,0.08)',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      tension: 0.3,
+      fill: true,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { display: false },
+      y: {
+        ticks: { color: '#64748b', font: { size: 10 } },
+        grid: { color: '#1e2235' },
+        min: 0
+      }
+    }
+  }
+});
+
+const protoChart = new Chart(document.getElementById('proto-chart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['TCP', 'UDP', 'ICMP'],
+    datasets: [{
+      data: [0, 0, 0],
+      backgroundColor: ['#60a5fa', '#f87171', '#fbbf24'],
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 }, padding: 12 } }
+    }
+  }
+});
+
+function makeShapBars(shap) {
+  const entries = Object.entries(shap).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]));
+  const maxVal  = Math.max(...entries.map(e => Math.abs(e[1])), 0.0001);
+  return '<div class="shap-wrap">' + entries.map(([k,v]) => {
+    const pct   = Math.min(100, Math.round(Math.abs(v) / maxVal * 100));
+    const color = v >= 0 ? '#f87171' : '#34d399';
+    return `<div class="shap-row">
+      <span class="shap-lbl">${k}</span>
+      <div class="shap-track"><div class="shap-fill" style="width:${pct}%;background:${color}"></div></div>
+      <span class="shap-val">${v >= 0 ? '+' : ''}${v.toFixed(3)}</span>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function addAlertRow(d) {
+  document.getElementById('empty-msg').style.display = 'none';
+  document.getElementById('table-wrap').style.display = 'block';
+
+  const tbody = document.getElementById('alert-tbody');
+  const proto = d.protocol || 'TCP';
+  const pc    = proto === 'TCP' ? 'badge-blue' : proto === 'UDP' ? 'badge-red' : 'badge-gray';
+  const tr    = document.createElement('tr');
+  tr.className = 'new-row';
+  tr.innerHTML = `
+    <td>${d.timestamp.slice(11,19)}</td>
+    <td style="font-family:monospace">${d.src_ip}</td>
+    <td style="font-family:monospace">${d.dst_ip}</td>
+    <td><span class="badge ${pc}">${proto}</span></td>
+    <td>${d.packets}</td>
+    <td>${d.bytes}</td>
+    <td style="color:#fbbf24;font-family:monospace">${d.anomaly_score.toFixed(5)}</td>
+    <td>${makeShapBars(d.shap)}</td>
+  `;
+  tbody.insertBefore(tr, tbody.firstChild);
+  if (tbody.children.length > 50) tbody.removeChild(tbody.lastChild);
+}
+
+socket.on('new_flow', function(d) {
+  sessionFlows++;
+  totalFlows++;
+  document.getElementById('c-total').textContent   = totalFlows;
+  document.getElementById('c-session').textContent = sessionFlows;
+
+  const proto = d.protocol || 'TCP';
+  if (protoCount[proto] !== undefined) protoCount[proto]++;
+  protoChart.data.datasets[0].data = [protoCount.TCP, protoCount.UDP, protoCount.ICMP];
+  protoChart.update();
+
+  const now = new Date().toLocaleTimeString();
+  scoreLabels.push(now);
+  scoreData.push(d.anomaly_score);
+  if (scoreLabels.length > MAX_POINTS) { scoreLabels.shift(); scoreData.shift(); }
+
+  const threshold = parseFloat(document.getElementById('c-threshold').textContent) || 0;
+  scoreChart.data.datasets[0].borderColor = d.is_anomaly ? '#f87171' : '#a78bfa';
+  scoreChart.update();
+});
+
+socket.on('new_alert', function(d) {
+  totalAlerts++;
+  document.getElementById('c-detected').textContent = totalAlerts;
+  addAlertRow(d);
+});
+
+socket.on('connect', function() {
+  console.log('WebSocket connected');
+  fetch('/api/summary').then(r => r.json()).then(d => {
+    document.getElementById('c-total').textContent    = d.total_flows;
+    document.getElementById('c-detected').textContent = d.detected_anomalies;
+    document.getElementById('c-threshold').textContent = d.threshold;
+    totalFlows  = d.total_flows;
+    totalAlerts = d.detected_anomalies;
+  });
+  fetch('/api/alerts').then(r => r.json()).then(alerts => {
+    alerts.reverse().forEach(addAlertRow);
+  });
+  fetch('/api/threshold').then(r => r.json()).then(d => {
+    document.getElementById('c-threshold').textContent = d.threshold;
+  });
+});
+</script>
+</body>
+</html>

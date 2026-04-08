@@ -1,0 +1,542 @@
+[
+  {
+    "index": 8,
+    "timestamp": "2024-01-01 09:20:47",
+    "src_ip": "192.168.2.129",
+    "dst_ip": "192.168.2.78",
+    "protocol": "UDP",
+    "anomaly_score": 1.816594,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.0281,
+      "packets": 0.135,
+      "bytes": 0.7154,
+      "duration": -0.1,
+      "ttl": -0.1403,
+      "udp_tcp_ratio": 0.2742,
+      "bytes_per_packet": 0.0565
+    }
+  },
+  {
+    "index": 20,
+    "timestamp": "2024-01-01 08:39:25",
+    "src_ip": "172.16.0.33",
+    "dst_ip": "10.0.1.27",
+    "protocol": "TCP",
+    "anomaly_score": 1.974841,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.4592,
+      "packets": -0.0473,
+      "bytes": 0.399,
+      "duration": 0.0836,
+      "ttl": 0.1135,
+      "udp_tcp_ratio": -0.0564,
+      "bytes_per_packet": 0.1194
+    }
+  },
+  {
+    "index": 26,
+    "timestamp": "2024-01-01 08:06:55",
+    "src_ip": "10.0.0.148",
+    "dst_ip": "10.0.0.42",
+    "protocol": "TCP",
+    "anomaly_score": 1.83026,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0548,
+      "packets": 0.313,
+      "bytes": 0.0494,
+      "duration": 0.3203,
+      "ttl": 0.0306,
+      "udp_tcp_ratio": -0.0229,
+      "bytes_per_packet": 0.2908
+    }
+  },
+  {
+    "index": 37,
+    "timestamp": "2024-01-01 08:04:29",
+    "src_ip": "10.0.0.141",
+    "dst_ip": "172.16.0.111",
+    "protocol": "TCP",
+    "anomaly_score": 1.829858,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0511,
+      "packets": 0.3099,
+      "bytes": 0.0498,
+      "duration": 0.3207,
+      "ttl": 0.0264,
+      "udp_tcp_ratio": -0.021,
+      "bytes_per_packet": 0.2913
+    }
+  },
+  {
+    "index": 38,
+    "timestamp": "2024-01-01 09:03:05",
+    "src_ip": "172.16.0.39",
+    "dst_ip": "10.0.1.186",
+    "protocol": "TCP",
+    "anomaly_score": 1.869711,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.2806,
+      "packets": -0.0565,
+      "bytes": 0.4661,
+      "duration": 0.039,
+      "ttl": 0.1088,
+      "udp_tcp_ratio": -0.06,
+      "bytes_per_packet": 0.1878
+    }
+  },
+  {
+    "index": 50,
+    "timestamp": "2024-01-01 08:02:20",
+    "src_ip": "192.168.2.148",
+    "dst_ip": "203.0.113.131",
+    "protocol": "TCP",
+    "anomaly_score": 10.449956,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0856,
+      "packets": -0.1082,
+      "bytes": 0.2251,
+      "duration": 9.2755,
+      "ttl": 0.1078,
+      "udp_tcp_ratio": 0.0157,
+      "bytes_per_packet": 0.1157
+    }
+  },
+  {
+    "index": 54,
+    "timestamp": "2024-01-01 08:22:42",
+    "src_ip": "192.168.1.203",
+    "dst_ip": "10.0.0.233",
+    "protocol": "TCP",
+    "anomaly_score": 1.830124,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0519,
+      "packets": 0.3105,
+      "bytes": 0.0521,
+      "duration": 0.3225,
+      "ttl": 0.0314,
+      "udp_tcp_ratio": -0.0269,
+      "bytes_per_packet": 0.2886
+    }
+  },
+  {
+    "index": 60,
+    "timestamp": "2024-01-01 08:03:50",
+    "src_ip": "192.168.1.63",
+    "dst_ip": "203.0.113.92",
+    "protocol": "TCP",
+    "anomaly_score": 39.88813,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0746,
+      "packets": 0.563,
+      "bytes": 1.5854,
+      "duration": 36.5825,
+      "ttl": 0.1515,
+      "udp_tcp_ratio": 0.0534,
+      "bytes_per_packet": 0.1229
+    }
+  },
+  {
+    "index": 73,
+    "timestamp": "2024-01-01 08:16:32",
+    "src_ip": "10.0.1.22",
+    "dst_ip": "10.0.1.100",
+    "protocol": "UDP",
+    "anomaly_score": 4341.573242,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.1126,
+      "packets": 1911.8108,
+      "bytes": 2428.9924,
+      "duration": -1.4431,
+      "ttl": -0.4627,
+      "udp_tcp_ratio": 1.9668,
+      "bytes_per_packet": -0.0817
+    }
+  },
+  {
+    "index": 74,
+    "timestamp": "2024-01-01 08:13:41",
+    "src_ip": "192.168.1.200",
+    "dst_ip": "203.0.113.184",
+    "protocol": "TCP",
+    "anomaly_score": 10.138463,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0919,
+      "packets": 0.2567,
+      "bytes": 1.1818,
+      "duration": 7.7006,
+      "ttl": 0.0682,
+      "udp_tcp_ratio": -0.002,
+      "bytes_per_packet": 0.1212
+    }
+  },
+  {
+    "index": 76,
+    "timestamp": "2024-01-01 08:02:28",
+    "src_ip": "10.0.0.244",
+    "dst_ip": "10.0.0.152",
+    "protocol": "TCP",
+    "anomaly_score": 1.830268,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0532,
+      "packets": 0.3096,
+      "bytes": 0.0498,
+      "duration": 0.3215,
+      "ttl": 0.0345,
+      "udp_tcp_ratio": -0.0242,
+      "bytes_per_packet": 0.2883
+    }
+  },
+  {
+    "index": 78,
+    "timestamp": "2024-01-01 08:20:31",
+    "src_ip": "10.0.1.100",
+    "dst_ip": "192.168.2.231",
+    "protocol": "UDP",
+    "anomaly_score": 1.932228,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.039,
+      "packets": 0.0093,
+      "bytes": 0.61,
+      "duration": -0.0792,
+      "ttl": 0.1016,
+      "udp_tcp_ratio": 0.243,
+      "bytes_per_packet": 0.1826
+    }
+  },
+  {
+    "index": 80,
+    "timestamp": "2024-01-01 08:43:46",
+    "src_ip": "10.0.0.52",
+    "dst_ip": "192.168.2.60",
+    "protocol": "UDP",
+    "anomaly_score": 1.661684,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.027,
+      "packets": -0.0767,
+      "bytes": 0.323,
+      "duration": 0.2079,
+      "ttl": -0.0183,
+      "udp_tcp_ratio": 0.2446,
+      "bytes_per_packet": 0.1043
+    }
+  },
+  {
+    "index": 86,
+    "timestamp": "2024-01-01 09:43:11",
+    "src_ip": "10.0.0.229",
+    "dst_ip": "192.168.1.1",
+    "protocol": "TCP",
+    "anomaly_score": 1.839452,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.5871,
+      "packets": -0.0177,
+      "bytes": -0.1369,
+      "duration": 0.274,
+      "ttl": 0.108,
+      "udp_tcp_ratio": -0.0171,
+      "bytes_per_packet": 0.1383
+    }
+  },
+  {
+    "index": 92,
+    "timestamp": "2024-01-01 09:10:48",
+    "src_ip": "172.16.0.175",
+    "dst_ip": "192.168.2.76",
+    "protocol": "TCP",
+    "anomaly_score": 2.054652,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.124,
+      "packets": 0.1037,
+      "bytes": 0.9186,
+      "duration": 0.0445,
+      "ttl": -0.1482,
+      "udp_tcp_ratio": -0.0788,
+      "bytes_per_packet": 0.187
+    }
+  },
+  {
+    "index": 93,
+    "timestamp": "2024-01-01 08:01:59",
+    "src_ip": "192.168.1.226",
+    "dst_ip": "192.168.2.195",
+    "protocol": "TCP",
+    "anomaly_score": 1.830208,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0553,
+      "packets": 0.3129,
+      "bytes": 0.048,
+      "duration": 0.3252,
+      "ttl": 0.0337,
+      "udp_tcp_ratio": -0.0277,
+      "bytes_per_packet": 0.2895
+    }
+  },
+  {
+    "index": 95,
+    "timestamp": "2024-01-01 08:09:31",
+    "src_ip": "172.16.0.210",
+    "dst_ip": "192.168.1.149",
+    "protocol": "UDP",
+    "anomaly_score": 2387.300049,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.2413,
+      "packets": 1025.9046,
+      "bytes": 1360.6177,
+      "duration": -0.907,
+      "ttl": -0.4711,
+      "udp_tcp_ratio": 1.4481,
+      "bytes_per_packet": 0.0447
+    }
+  },
+  {
+    "index": 107,
+    "timestamp": "2024-01-01 08:21:39",
+    "src_ip": "10.0.0.176",
+    "dst_ip": "172.16.0.187",
+    "protocol": "TCP",
+    "anomaly_score": 1.563921,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.4361,
+      "packets": 0.0165,
+      "bytes": 0.4215,
+      "duration": -0.1446,
+      "ttl": -0.0161,
+      "udp_tcp_ratio": -0.0741,
+      "bytes_per_packet": 0.0209
+    }
+  },
+  {
+    "index": 108,
+    "timestamp": "2024-01-01 08:04:26",
+    "src_ip": "192.168.2.214",
+    "dst_ip": "10.0.0.38",
+    "protocol": "UDP",
+    "anomaly_score": 2.024906,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.0442,
+      "packets": 0.143,
+      "bytes": 0.7133,
+      "duration": 0.0415,
+      "ttl": 0.0191,
+      "udp_tcp_ratio": 0.2073,
+      "bytes_per_packet": 0.041
+    }
+  },
+  {
+    "index": 116,
+    "timestamp": "2024-01-01 08:03:36",
+    "src_ip": "192.168.1.61",
+    "dst_ip": "172.16.0.35",
+    "protocol": "TCP",
+    "anomaly_score": 1.61324,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.4969,
+      "packets": 0.2249,
+      "bytes": 0.0379,
+      "duration": 0.152,
+      "ttl": -0.0146,
+      "udp_tcp_ratio": -0.0463,
+      "bytes_per_packet": -0.1413
+    }
+  },
+  {
+    "index": 117,
+    "timestamp": "2024-01-01 08:01:55",
+    "src_ip": "10.0.1.40",
+    "dst_ip": "203.0.113.178",
+    "protocol": "TCP",
+    "anomaly_score": 134.448898,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0305,
+      "packets": 2.4735,
+      "bytes": 5.5129,
+      "duration": 124.9854,
+      "ttl": 0.2664,
+      "udp_tcp_ratio": 0.1685,
+      "bytes_per_packet": 0.1689
+    }
+  },
+  {
+    "index": 120,
+    "timestamp": "2024-01-01 08:34:19",
+    "src_ip": "172.16.0.234",
+    "dst_ip": "10.0.0.3",
+    "protocol": "UDP",
+    "anomaly_score": 1.88701,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.0316,
+      "packets": 0.1253,
+      "bytes": 0.6616,
+      "duration": -0.078,
+      "ttl": -0.001,
+      "udp_tcp_ratio": 0.2705,
+      "bytes_per_packet": 0.0364
+    }
+  },
+  {
+    "index": 122,
+    "timestamp": "2024-01-01 08:03:12",
+    "src_ip": "172.16.0.10",
+    "dst_ip": "203.0.113.132",
+    "protocol": "TCP",
+    "anomaly_score": 77.307266,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0427,
+      "packets": 0.1035,
+      "bytes": 1.2174,
+      "duration": 74.4064,
+      "ttl": 0.196,
+      "udp_tcp_ratio": 0.1215,
+      "bytes_per_packet": 0.4013
+    }
+  },
+  {
+    "index": 132,
+    "timestamp": "2024-01-01 08:08:43",
+    "src_ip": "172.16.0.22",
+    "dst_ip": "203.0.113.58",
+    "protocol": "TCP",
+    "anomaly_score": 24.47061,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0767,
+      "packets": -0.015,
+      "bytes": 0.479,
+      "duration": 22.8748,
+      "ttl": 0.1396,
+      "udp_tcp_ratio": 0.0468,
+      "bytes_per_packet": 0.1182
+    }
+  },
+  {
+    "index": 135,
+    "timestamp": "2024-01-01 08:03:16",
+    "src_ip": "192.168.1.196",
+    "dst_ip": "192.168.2.121",
+    "protocol": "TCP",
+    "anomaly_score": 2.643014,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.0419,
+      "packets": 0.1743,
+      "bytes": 1.1141,
+      "duration": 0.2576,
+      "ttl": 0.1008,
+      "udp_tcp_ratio": -0.0689,
+      "bytes_per_packet": 0.203
+    }
+  },
+  {
+    "index": 148,
+    "timestamp": "2024-01-01 08:58:57",
+    "src_ip": "10.0.0.166",
+    "dst_ip": "192.168.2.77",
+    "protocol": "TCP",
+    "anomaly_score": 1.938664,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.0626,
+      "packets": -0.0525,
+      "bytes": 0.5617,
+      "duration": 0.2826,
+      "ttl": 0.0991,
+      "udp_tcp_ratio": -0.0478,
+      "bytes_per_packet": 0.2543
+    }
+  },
+  {
+    "index": 153,
+    "timestamp": "2024-01-01 08:00:59",
+    "src_ip": "10.0.1.4",
+    "dst_ip": "203.0.113.217",
+    "protocol": "TCP",
+    "anomaly_score": 109.066086,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0436,
+      "packets": 0.9943,
+      "bytes": 3.3421,
+      "duration": 103.1513,
+      "ttl": 0.2212,
+      "udp_tcp_ratio": 0.1367,
+      "bytes_per_packet": 0.3602
+    }
+  },
+  {
+    "index": 165,
+    "timestamp": "2024-01-01 08:17:11",
+    "src_ip": "192.168.2.151",
+    "dst_ip": "10.0.0.202",
+    "protocol": "TCP",
+    "anomaly_score": 1.830174,
+    "is_actual_anomaly": 1,
+    "shap": {
+      "tcp_flags": -0.0526,
+      "packets": 0.3118,
+      "bytes": 0.049,
+      "duration": 0.3205,
+      "ttl": 0.0326,
+      "udp_tcp_ratio": -0.0259,
+      "bytes_per_packet": 0.291
+    }
+  },
+  {
+    "index": 171,
+    "timestamp": "2024-01-01 08:58:45",
+    "src_ip": "192.168.2.102",
+    "dst_ip": "192.168.1.60",
+    "protocol": "TCP",
+    "anomaly_score": 1.649508,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": 0.2693,
+      "packets": 0.1195,
+      "bytes": 0.6142,
+      "duration": -0.0478,
+      "ttl": -0.1443,
+      "udp_tcp_ratio": -0.0872,
+      "bytes_per_packet": 0.0218
+    }
+  },
+  {
+    "index": 187,
+    "timestamp": "2024-01-01 08:09:55",
+    "src_ip": "172.16.0.201",
+    "dst_ip": "10.0.1.29",
+    "protocol": "ICMP",
+    "anomaly_score": 1.83987,
+    "is_actual_anomaly": 0,
+    "shap": {
+      "tcp_flags": -0.0217,
+      "packets": 0.0476,
+      "bytes": 0.6011,
+      "duration": 0.1745,
+      "ttl": 0.1167,
+      "udp_tcp_ratio": -0.0824,
+      "bytes_per_packet": 0.1002
+    }
+  }
+]
