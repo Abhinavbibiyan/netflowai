@@ -7,66 +7,81 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.2/dist/socket.io.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
-  header { background: #1a1d27; border-bottom: 1px solid #2d3148; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
-  header h1 { font-size: 18px; font-weight: 600; color: #a78bfa; }
-  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; margin-left: auto; animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .live-label { font-size: 12px; color: #34d399; }
-  .main { padding: 20px; max-width: 1400px; margin: 0 auto; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
-  .card { background: #1a1d27; border: 1px solid #2d3148; border-radius: 10px; padding: 16px; }
-  .card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-  .card .value { font-size: 26px; font-weight: 600; }
-  .purple { color: #a78bfa; } .red { color: #f87171; } .green { color: #34d399; } .amber { color: #fbbf24; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-  .panel { background: #1a1d27; border: 1px solid #2d3148; border-radius: 10px; padding: 18px; }
-  .panel h2 { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
-  .chart-wrap { position: relative; height: 200px; }
-  .full-panel { background: #1a1d27; border: 1px solid #2d3148; border-radius: 10px; padding: 18px; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead th { text-align: left; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; padding: 6px 8px; border-bottom: 1px solid #2d3148; }
-  tbody tr { border-bottom: 1px solid #1e2235; transition: background 0.1s; }
-  tbody tr:hover { background: #20243a; }
-  tbody tr.new-row { animation: flash 1s ease-out; }
-  @keyframes flash { 0%{background:#2d3b2a} 100%{background:transparent} }
-  tbody td { padding: 7px 8px; color: #cbd5e1; vertical-align: top; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; }
-  .badge-red { background:#3b1f1f; color:#f87171; }
-  .badge-green { background:#1a2e24; color:#34d399; }
-  .badge-blue { background:#1a2540; color:#60a5fa; }
-  .badge-gray { background:#252836; color:#94a3b8; }
-  .shap-wrap { display: flex; flex-direction: column; gap: 3px; }
-  .shap-row { display: flex; align-items: center; gap: 5px; }
-  .shap-lbl { width: 90px; font-size: 10px; color: #64748b; flex-shrink: 0; }
-  .shap-track { flex: 1; height: 5px; background: #252836; border-radius: 3px; overflow: hidden; }
-  .shap-fill { height: 100%; border-radius: 3px; }
-  .shap-val { width: 40px; text-align: right; font-size: 10px; color: #64748b; }
-  .empty { color: #64748b; font-size: 13px; padding: 20px 0; text-align: center; }
-  @media (max-width: 680px) { .grid2 { grid-template-columns: 1fr; } }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a0c14;color:#e2e8f0;min-height:100vh}
+header{background:#131620;border-bottom:1px solid #252a3d;padding:12px 24px;display:flex;align-items:center;gap:10px}
+header h1{font-size:17px;font-weight:700;color:#a78bfa}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#34d399;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.main{padding:18px;max-width:1500px;margin:0 auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.card{background:#13162080;border:1px solid #252a3d;border-radius:10px;padding:14px}
+.card .lbl{font-size:10px;color:#4b5563;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.card .val{font-size:24px;font-weight:700}
+.pu{color:#a78bfa}.re{color:#f87171}.gr{color:#34d399}.am{color:#fbbf24}.bl{color:#60a5fa}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.panel{background:#13162080;border:1px solid #252a3d;border-radius:10px;padding:16px}
+.panel h2{font-size:11px;font-weight:600;color:#4b5563;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.chart-wrap{position:relative;height:190px}
+.alert-card{background:#0f1220;border:1px solid #1e2438;border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:border-color .2s}
+.alert-card:hover{border-color:#3b4268}
+.alert-card.flash{animation:cardflash .8s ease-out}
+@keyframes cardflash{0%{background:#1a2e1a}100%{background:#0f1220}}
+.alert-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.alert-time{font-size:11px;color:#4b5563;font-family:monospace}
+.sev{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.sev-Critical{background:#3b0f0f;color:#f87171}
+.sev-High{background:#3b2a0f;color:#fbbf24}
+.sev-Medium{background:#1a2a3b;color:#60a5fa}
+.sev-Low{background:#1a2e24;color:#34d399}
+.threat-type{font-size:13px;font-weight:600;color:#e2e8f0}
+.proto-badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:500}
+.pb-TCP{background:#1a2540;color:#60a5fa}
+.pb-UDP{background:#3b1f1f;color:#f87171}
+.pb-ICMP{background:#2a2a1a;color:#fbbf24}
+.alert-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.info-block{background:#0a0c14;border:1px solid #1e2438;border-radius:8px;padding:10px 12px}
+.info-block .ib-label{font-size:10px;color:#4b5563;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.info-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0;border-bottom:1px solid #0f1220}
+.info-row:last-child{border-bottom:none}
+.info-row .ik{color:#64748b}
+.info-row .iv{color:#cbd5e1;font-family:monospace;text-align:right;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reason-block{background:#0d1525;border-left:3px solid #3b4268;border-radius:0 8px 8px 0;padding:10px 12px;margin-bottom:8px;font-size:12px;color:#94a3b8;line-height:1.6}
+.action-block{background:#0d1a0d;border-left:3px solid #1f4d2a;border-radius:0 8px 8px 0;padding:8px 12px;font-size:12px;color:#34d399}
+.shap-section{margin-top:8px}
+.shap-section .sh-title{font-size:10px;color:#4b5563;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.shap-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.shap-lbl{width:110px;font-size:11px;color:#64748b;flex-shrink:0}
+.shap-track{flex:1;height:6px;background:#1e2438;border-radius:3px;overflow:hidden}
+.shap-fill{height:100%;border-radius:3px}
+.shap-val{width:50px;text-align:right;font-size:11px;font-family:monospace}
+.shap-exp{font-size:11px;color:#4b5563;font-style:italic;margin-top:2px}
+.empty{color:#4b5563;font-size:13px;padding:30px;text-align:center}
+.score-ratio{font-size:11px;color:#64748b}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}.alert-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <header>
   <h1>NetFlowAI</h1>
-  <span style="font-size:12px;color:#64748b">Live anomaly detection</span>
+  <span style="font-size:11px;color:#4b5563">Live network anomaly detection</span>
   <div class="live-dot" style="margin-left:auto"></div>
-  <span class="live-label">LIVE</span>
+  <span style="font-size:11px;color:#34d399;margin-left:4px">LIVE</span>
 </header>
 
 <div class="main">
   <div class="cards">
-    <div class="card"><div class="label">Total flows scored</div><div class="value purple" id="c-total">0</div></div>
-    <div class="card"><div class="label">Anomalies detected</div><div class="value red" id="c-detected">0</div></div>
-    <div class="card"><div class="label">Flows this session</div><div class="value amber" id="c-session">0</div></div>
-    <div class="card"><div class="label">Model threshold</div><div class="value green" id="c-threshold">—</div></div>
+    <div class="card"><div class="lbl">Total flows scored</div><div class="val pu" id="c-total">0</div></div>
+    <div class="card"><div class="lbl">Anomalies detected</div><div class="val re" id="c-detected">0</div></div>
+    <div class="card"><div class="lbl">Critical</div><div class="val re" id="c-crit">0</div></div>
+    <div class="card"><div class="lbl">High</div><div class="val am" id="c-high">0</div></div>
+    <div class="card"><div class="lbl">Medium / Low</div><div class="val bl" id="c-med">0</div></div>
+    <div class="card"><div class="lbl">Model threshold</div><div class="val gr" id="c-threshold">—</div></div>
   </div>
 
   <div class="grid2">
     <div class="panel">
-      <h2>Anomaly score — last 60 flows</h2>
+      <h2>Anomaly score — last 60 flows (red = above threshold)</h2>
       <div class="chart-wrap"><canvas id="score-chart"></canvas></div>
     </div>
     <div class="panel">
@@ -75,19 +90,17 @@
     </div>
   </div>
 
-  <div class="full-panel">
-    <h2 style="margin-bottom:14px">Live alerts — most recent first</h2>
-    <div id="alert-table-wrap">
+  <div class="panel" style="margin-bottom:18px">
+    <h2>Threat type breakdown</h2>
+    <div class="chart-wrap" style="height:140px"><canvas id="threat-chart"></canvas></div>
+  </div>
+
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:12px">
+      Live alerts — most recent first
+    </div>
+    <div id="alerts-container">
       <div class="empty" id="empty-msg">Waiting for anomalies...</div>
-      <div style="overflow-x:auto;display:none" id="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Time</th><th>Src IP</th><th>Dst IP</th><th>Proto</th>
-            <th>Pkts</th><th>Bytes</th><th>Score</th><th>SHAP importance</th>
-          </tr></thead>
-          <tbody id="alert-tbody"></tbody>
-        </table>
-      </div>
     </div>
   </div>
 </div>
@@ -95,140 +108,187 @@
 <script>
 const socket = io();
 
-let sessionFlows = 0;
-let totalFlows   = 0;
-let totalAlerts  = 0;
-let protoCount   = { TCP: 0, UDP: 0, ICMP: 0 };
+let totalFlows=0, totalAlerts=0, critCount=0, highCount=0, medCount=0;
+let protoCount={TCP:0,UDP:0,ICMP:0};
+let threatCount={};
+const scoreLabels=[], scoreData=[], scoreColors=[];
+let threshold=0;
 
-const scoreLabels = [];
-const scoreData   = [];
-const MAX_POINTS  = 60;
-
-const scoreChart = new Chart(document.getElementById('score-chart'), {
-  type: 'line',
-  data: {
-    labels: scoreLabels,
-    datasets: [{
-      label: 'Anomaly score',
-      data: scoreData,
-      borderColor: '#a78bfa',
-      backgroundColor: 'rgba(167,139,250,0.08)',
-      borderWidth: 1.5,
-      pointRadius: 2,
-      tension: 0.3,
-      fill: true,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false, animation: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false },
-      y: {
-        ticks: { color: '#64748b', font: { size: 10 } },
-        grid: { color: '#1e2235' },
-        min: 0
-      }
-    }
-  }
+const scoreChart = new Chart(document.getElementById('score-chart'),{
+  type:'line',
+  data:{labels:scoreLabels,datasets:[{
+    label:'Score',data:scoreData,
+    borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,0.06)',
+    borderWidth:1.5,pointRadius:3,pointBackgroundColor:scoreColors,tension:0.3,fill:true
+  }]},
+  options:{responsive:true,maintainAspectRatio:false,animation:false,
+    plugins:{legend:{display:false},
+      annotation:{annotations:{}}
+    },
+    scales:{
+      x:{display:false},
+      y:{ticks:{color:'#4b5563',font:{size:10}},grid:{color:'#1a1f30'},min:0}
+    }}
 });
 
-const protoChart = new Chart(document.getElementById('proto-chart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['TCP', 'UDP', 'ICMP'],
-    datasets: [{
-      data: [0, 0, 0],
-      backgroundColor: ['#60a5fa', '#f87171', '#fbbf24'],
-      borderWidth: 0,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false, animation: false,
-    plugins: {
-      legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 }, padding: 12 } }
-    }
-  }
+const protoChart = new Chart(document.getElementById('proto-chart'),{
+  type:'doughnut',
+  data:{labels:['TCP','UDP','ICMP'],datasets:[{data:[0,0,0],
+    backgroundColor:['#3b6fd4','#d44b4b','#c9a227'],borderWidth:0}]},
+  options:{responsive:true,maintainAspectRatio:false,animation:false,
+    plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},padding:10}}}}
 });
 
-function makeShapBars(shap) {
-  const entries = Object.entries(shap).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]));
-  const maxVal  = Math.max(...entries.map(e => Math.abs(e[1])), 0.0001);
-  return '<div class="shap-wrap">' + entries.map(([k,v]) => {
-    const pct   = Math.min(100, Math.round(Math.abs(v) / maxVal * 100));
-    const color = v >= 0 ? '#f87171' : '#34d399';
+const threatChart = new Chart(document.getElementById('threat-chart'),{
+  type:'bar',
+  data:{labels:[],datasets:[{label:'Count',data:[],
+    backgroundColor:['#f87171','#fbbf24','#60a5fa','#34d399','#a78bfa','#fb923c'],
+    borderWidth:0,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,animation:false,indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{ticks:{color:'#4b5563',font:{size:10}},grid:{color:'#1a1f30'}},
+      y:{ticks:{color:'#94a3b8',font:{size:11}},grid:{display:false}}
+    }}
+});
+
+function updateThreatChart(){
+  const labels=Object.keys(threatCount);
+  const data=Object.values(threatCount);
+  threatChart.data.labels=labels;
+  threatChart.data.datasets[0].data=data;
+  threatChart.update();
+}
+
+function makeShapBars(shap,explanations){
+  const entries=Object.entries(shap).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+  const maxVal=Math.max(...entries.map(e=>Math.abs(e[1])),0.0001);
+  return entries.map(([k,v])=>{
+    const pct=Math.min(100,Math.round(Math.abs(v)/maxVal*100));
+    const color=v>=0?'#f87171':'#34d399';
+    const exp=explanations?explanations.find(e=>e.startsWith(k)):'';
+    const expText=exp?`<div class="shap-exp">${exp.split('—')[1]?.trim()||''}</div>`:'';
     return `<div class="shap-row">
       <span class="shap-lbl">${k}</span>
       <div class="shap-track"><div class="shap-fill" style="width:${pct}%;background:${color}"></div></div>
-      <span class="shap-val">${v >= 0 ? '+' : ''}${v.toFixed(3)}</span>
+      <span class="shap-val" style="color:${color}">${v>=0?'+':''}${v.toFixed(3)}</span>
+    </div>${expText}`;
+  }).join('');
+}
+
+function srcDisplay(d){
+  return d.src_host && d.src_host!==d.src_ip
+    ? `<span title="${d.src_ip}">${d.src_host}</span> <span style="font-size:10px;color:#4b5563">(${d.src_ip})</span>`
+    : d.src_ip;
+}
+function dstDisplay(d){
+  return d.dst_host && d.dst_host!==d.dst_ip
+    ? `<span title="${d.dst_ip}">${d.dst_host}</span> <span style="font-size:10px;color:#4b5563">(${d.dst_ip})</span>`
+    : d.dst_ip;
+}
+
+function addAlertCard(d){
+  document.getElementById('empty-msg').style.display='none';
+  const container=document.getElementById('alerts-container');
+  const pc=`pb-${d.protocol||'TCP'}`;
+  const sc=`sev-${d.severity||'Medium'}`;
+  const ratio=d.score_ratio||'—';
+
+  const div=document.createElement('div');
+  div.className='alert-card flash';
+  div.innerHTML=`
+    <div class="alert-header">
+      <span class="alert-time">${d.timestamp}</span>
+      <span class="sev ${sc}">${d.severity||'?'}</span>
+      <span class="threat-type">${d.threat_type||'Anomaly'}</span>
+      <span class="proto-badge ${pc}">${d.protocol}</span>
+      <span class="score-ratio" style="margin-left:auto">score ${d.anomaly_score} &nbsp;(×${ratio} threshold)</span>
+    </div>
+
+    <div class="alert-grid">
+      <div class="info-block">
+        <div class="ib-label">Source</div>
+        <div class="info-row"><span class="ik">IP</span><span class="iv">${d.src_ip}</span></div>
+        <div class="info-row"><span class="ik">Hostname</span><span class="iv">${d.src_host||d.src_ip}</span></div>
+      </div>
+      <div class="info-block">
+        <div class="ib-label">Destination</div>
+        <div class="info-row"><span class="ik">IP</span><span class="iv">${d.dst_ip}</span></div>
+        <div class="info-row"><span class="ik">Hostname / Website</span><span class="iv">${d.dst_host||d.dst_ip}</span></div>
+      </div>
+      <div class="info-block">
+        <div class="ib-label">Flow stats</div>
+        <div class="info-row"><span class="ik">Packets</span><span class="iv">${d.packets}</span></div>
+        <div class="info-row"><span class="ik">Bytes</span><span class="iv">${(d.bytes||0).toLocaleString()}</span></div>
+        <div class="info-row"><span class="ik">Bytes / packet</span><span class="iv">${d.bytes_per_packet}</span></div>
+        <div class="info-row"><span class="ik">TTL</span><span class="iv">${d.ttl}</span></div>
+      </div>
+      <div class="info-block">
+        <div class="ib-label">Model output</div>
+        <div class="info-row"><span class="ik">Anomaly score</span><span class="iv" style="color:#fbbf24">${d.anomaly_score}</span></div>
+        <div class="info-row"><span class="ik">Threshold</span><span class="iv">${d.threshold}</span></div>
+        <div class="info-row"><span class="ik">Score ratio</span><span class="iv" style="color:#f87171">×${ratio}</span></div>
+        <div class="info-row"><span class="ik">Protocol</span><span class="iv">${d.protocol}</span></div>
+      </div>
+    </div>
+
+    <div class="reason-block">
+      <strong style="color:#cbd5e1">Why flagged:</strong> ${d.reason||'—'}
+    </div>
+    <div class="action-block">
+      <strong>Recommended action:</strong> ${d.action||'—'}
+    </div>
+
+    <div class="shap-section">
+      <div class="sh-title">SHAP feature importance — what drove this anomaly score</div>
+      ${makeShapBars(d.shap||{}, d.shap_explanation||[])}
     </div>`;
-  }).join('') + '</div>';
+
+  container.insertBefore(div, container.firstChild);
+  if(container.children.length>51) container.removeChild(container.lastChild);
 }
 
-function addAlertRow(d) {
-  document.getElementById('empty-msg').style.display = 'none';
-  document.getElementById('table-wrap').style.display = 'block';
-
-  const tbody = document.getElementById('alert-tbody');
-  const proto = d.protocol || 'TCP';
-  const pc    = proto === 'TCP' ? 'badge-blue' : proto === 'UDP' ? 'badge-red' : 'badge-gray';
-  const tr    = document.createElement('tr');
-  tr.className = 'new-row';
-  tr.innerHTML = `
-    <td>${d.timestamp.slice(11,19)}</td>
-    <td style="font-family:monospace">${d.src_ip}</td>
-    <td style="font-family:monospace">${d.dst_ip}</td>
-    <td><span class="badge ${pc}">${proto}</span></td>
-    <td>${d.packets}</td>
-    <td>${d.bytes}</td>
-    <td style="color:#fbbf24;font-family:monospace">${d.anomaly_score.toFixed(5)}</td>
-    <td>${makeShapBars(d.shap)}</td>
-  `;
-  tbody.insertBefore(tr, tbody.firstChild);
-  if (tbody.children.length > 50) tbody.removeChild(tbody.lastChild);
-}
-
-socket.on('new_flow', function(d) {
-  sessionFlows++;
+socket.on('new_flow', function(d){
   totalFlows++;
-  document.getElementById('c-total').textContent   = totalFlows;
-  document.getElementById('c-session').textContent = sessionFlows;
-
-  const proto = d.protocol || 'TCP';
-  if (protoCount[proto] !== undefined) protoCount[proto]++;
-  protoChart.data.datasets[0].data = [protoCount.TCP, protoCount.UDP, protoCount.ICMP];
+  document.getElementById('c-total').textContent=totalFlows;
+  const proto=d.protocol||'TCP';
+  if(protoCount[proto]!==undefined) protoCount[proto]++;
+  protoChart.data.datasets[0].data=[protoCount.TCP,protoCount.UDP,protoCount.ICMP];
   protoChart.update();
-
-  const now = new Date().toLocaleTimeString();
-  scoreLabels.push(now);
+  scoreLabels.push(d.timestamp.slice(11,19));
   scoreData.push(d.anomaly_score);
-  if (scoreLabels.length > MAX_POINTS) { scoreLabels.shift(); scoreData.shift(); }
-
-  const threshold = parseFloat(document.getElementById('c-threshold').textContent) || 0;
-  scoreChart.data.datasets[0].borderColor = d.is_anomaly ? '#f87171' : '#a78bfa';
+  scoreColors.push(d.is_anomaly?'#f87171':'#a78bfa');
+  if(scoreLabels.length>60){scoreLabels.shift();scoreData.shift();scoreColors.shift();}
+  scoreChart.data.datasets[0].pointBackgroundColor=scoreColors;
   scoreChart.update();
 });
 
-socket.on('new_alert', function(d) {
+socket.on('new_alert', function(d){
   totalAlerts++;
-  document.getElementById('c-detected').textContent = totalAlerts;
-  addAlertRow(d);
+  document.getElementById('c-detected').textContent=totalAlerts;
+  const sev=d.severity||'Medium';
+  if(sev==='Critical'){critCount++;document.getElementById('c-crit').textContent=critCount;}
+  else if(sev==='High'){highCount++;document.getElementById('c-high').textContent=highCount;}
+  else{medCount++;document.getElementById('c-med').textContent=medCount;}
+  const tt=d.threat_type||'Unknown';
+  threatCount[tt]=(threatCount[tt]||0)+1;
+  updateThreatChart();
+  addAlertCard(d);
 });
 
-socket.on('connect', function() {
-  console.log('WebSocket connected');
-  fetch('/api/summary').then(r => r.json()).then(d => {
-    document.getElementById('c-total').textContent    = d.total_flows;
-    document.getElementById('c-detected').textContent = d.detected_anomalies;
-    document.getElementById('c-threshold').textContent = d.threshold;
-    totalFlows  = d.total_flows;
-    totalAlerts = d.detected_anomalies;
+socket.on('connect', function(){
+  fetch('/api/summary').then(r=>r.json()).then(d=>{
+    document.getElementById('c-total').textContent=d.total_flows;
+    document.getElementById('c-detected').textContent=d.detected_anomalies;
+    document.getElementById('c-threshold').textContent=d.threshold;
+    threshold=d.threshold; totalFlows=d.total_flows; totalAlerts=d.detected_anomalies;
   });
-  fetch('/api/alerts').then(r => r.json()).then(alerts => {
-    alerts.reverse().forEach(addAlertRow);
+  fetch('/api/alerts').then(r=>r.json()).then(alerts=>{
+    alerts.slice().reverse().forEach(addAlertCard);
   });
-  fetch('/api/threshold').then(r => r.json()).then(d => {
-    document.getElementById('c-threshold').textContent = d.threshold;
+  fetch('/api/threshold').then(r=>r.json()).then(d=>{
+    document.getElementById('c-threshold').textContent=d.threshold;
+    threshold=d.threshold;
   });
 });
 </script>
